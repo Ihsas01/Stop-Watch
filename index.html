@@ -1,20 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stopwatch</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Holographic Stopwatch</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300&display=swap" rel="stylesheet">
 </head>
-<body>
-
-    <div id="timer">00:00:00</div>
-    <div id="buttons">
-        <button id="start">Start</button>
-        <button id="stop">Stop</button>
-        <button id="reset">Reset</button>
+<body class="dark-theme">
+  <div id="webgl-background"></div>
+  <div class="container">
+    <div class="controls">
+      <button id="theme-toggle" class="control-btn" aria-label="Toggle Theme">🌙</button>
+      <select id="color-theme" aria-label="Select Color Theme">
+        <option value="neon">Neon</option>
+        <option value="blue">Blue</option>
+        <option value="purple">Purple</option>
+      </select>
+      <button id="settings-toggle" class="control-btn" aria-label="Toggle Settings">⚙️</button>
+      <button id="export-laps" class="control-btn" aria-label="Export Laps">📥</button>
     </div>
-    <script src="index.js"></script>
+    <div class="settings-panel" id="settings-panel" hidden>
+      <label><input type="checkbox" id="sound-toggle" checked> Enable Sound</label>
+      <label><input type="checkbox" id="haptic-toggle" checked> Enable Haptic Feedback</label>
+      <label>Timer Precision:
+        <select id="timer-precision">
+          <option value="10">High (0.01s)</option>
+          <option value="100">Medium (0.1s)</option>
+          <option value="1000">Low (1s)</option>
+        </select>
+      </label>
+      <button id="split-mode" class="btn">Toggle Split Mode</button>
+    </div>
+    <div class="stopwatch">
+      <div class="timer-container">
+        <svg class="progress-ring" width="100%" height="100%" viewBox="0 0 340 340" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" class="gradient-start" />
+              <stop offset="100%" class="gradient-end" />
+            </linearGradient>
+          </defs>
+          <circle class="progress-ring__circle" cx="170" cy="170" r="160" stroke="url(#gradient)" />
+        </svg>
+        <div class="timer-flip">
+          <div id="timer" class="flip-card">00:00:00.00</div>
+        </div>
+      </div>
+      <div id="buttons" role="group">
+        <button id="start" class="btn" aria-label="Start Timer"><span>Start</span></button>
+        <button id="stop" class="btn" disabled aria-label="Stop Timer"><span>Stop</span></button>
+        <button id="reset" class="btn" aria-label="Reset Timer"><span>Reset</span></button>
+        <button id="lap" class="btn" disabled aria-label="Record Lap"><span>Lap</span></button>
+      </div>
+      <div id="laps" class="laps" role="list"></div>
+    </div>
+  </div>
+  <audio id="click-sound" preload="auto" src="https://cdn.pixabay.com/audio/2022/03/10/audio_3b1f6a4b6e.mp3"></audio>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js" defer></script>
+  <script src="index.js" defer></script>
 </body>
 </html>
